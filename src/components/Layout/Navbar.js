@@ -2,32 +2,17 @@ import React, { useState } from 'react';
 import useResume from '../../hooks/useResume';
 import '../../styles/Navbar.css';
 
-function Navbar() {
+function Navbar({ currentView, setCurrentView }) {
   const { actions } = useResume();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [fileInputRef] = useState(React.createRef());
-
-  const handleImportClick = () => {
-    fileInputRef.current?.click();
-  };
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      actions.importResume(file)
-        .then(() => {
-          alert('Resume imported successfully!');
-        })
-        .catch((error) => {
-          alert('Error importing resume: ' + error.message);
-        });
-    }
-    // Reset the file input
-    e.target.value = '';
-  };
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleViewChange = (view) => {
+    setCurrentView(view);
+    setIsMenuOpen(false); // Close mobile menu when switching views
   };
 
   return (
@@ -38,14 +23,25 @@ function Navbar() {
         </div>
         
         <div className={`navbar-menu ${isMenuOpen ? 'active' : ''}`}>
-          <button onClick={actions.exportResume} className="nav-btn">
-            <span className="btn-icon">📤</span>
-            <span className="btn-text">Export</span>
+          <button 
+            onClick={() => handleViewChange('builder')} 
+            className={`nav-btn view-btn ${currentView === 'builder' ? 'active' : ''}`}
+          >
+            <span className="btn-icon">✏️</span>
+            <span className="btn-text">Builder</span>
           </button>
           
-          <button onClick={handleImportClick} className="nav-btn">
-            <span className="btn-icon">📥</span>
-            <span className="btn-text">Import</span>
+          <button 
+            onClick={() => handleViewChange('viewer')} 
+            className={`nav-btn view-btn ${currentView === 'viewer' ? 'active' : ''}`}
+          >
+            <span className="btn-icon">👁️</span>
+            <span className="btn-text">Resume Viewer</span>
+          </button>
+          
+          <button onClick={actions.downloadResume} className="nav-btn download-btn">
+            <span className="btn-icon">💾</span>
+            <span className="btn-text">Download</span>
           </button>
           
           <button onClick={actions.resetResume} className="nav-btn reset-btn">
@@ -65,14 +61,6 @@ function Navbar() {
           <span className="hamburger"></span>
         </div>
       </div>
-      
-      <input
-        type="file"
-        ref={fileInputRef}
-        onChange={handleFileChange}
-        accept=".json"
-        style={{ display: 'none' }}
-      />
     </nav>
   );
 }
