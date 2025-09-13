@@ -30,6 +30,12 @@
   box-shadow: none !important;
   border-radius: 0 !important;
   page-break-inside: avoid;
+  position: static !important;
+  transform: none !important;
+  overflow: visible !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  display: block !important;
 }
 
 .resume-template.pdf-mode .resume-header {
@@ -38,6 +44,11 @@
   padding-bottom: 15px;
   border-bottom: 2px solid #2c3e50;
   page-break-inside: avoid;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: static !important;
+  transform: none !important;
 }
 
 .resume-template.pdf-mode .resume-header h1 {
@@ -67,6 +78,11 @@
 .resume-template.pdf-mode .section {
   margin-bottom: 20px;
   page-break-inside: avoid;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: static !important;
+  transform: none !important;
 }
 
 .resume-template.pdf-mode .section-title {
@@ -182,6 +198,40 @@
 /* Ensure proper spacing and avoid page breaks in awkward places */
 .resume-template.pdf-mode .section:last-child {
   margin-bottom: 0;
+}
+
+/* Force visibility for all PDF elements */
+.resume-template.pdf-mode * {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: static !important;
+  transform: none !important;
+  color: #000000 !important;
+  background-color: transparent !important;
+}
+
+.resume-template.pdf-mode .contact-info,
+.resume-template.pdf-mode .skills-list,
+.resume-template.pdf-mode .languages-list {
+  display: flex !important;
+}
+
+.resume-template.pdf-mode .contact-item,
+.resume-template.pdf-mode .skill-pill,
+.resume-template.pdf-mode .language-item {
+  display: flex !important;
+}
+
+.resume-template.pdf-mode .item-header {
+  display: flex !important;
+}
+
+.resume-template.pdf-mode span,
+.resume-template.pdf-mode .item-date,
+.resume-template.pdf-mode .item-subtitle,
+.resume-template.pdf-mode .language-proficiency {
+  display: inline !important;
 }
 
 /* Mobile responsive adjustments for PDF */

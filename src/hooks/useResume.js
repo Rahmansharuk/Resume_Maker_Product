@@ -303,6 +303,270 @@ function useResume() {
     window.print();
   }, []);
 
+  // Alternative PDF generation method using direct data rendering
+  const generatePDFFromData = useCallback(async () => {
+    try {
+      const jsPDF = (await import('jspdf')).default;
+      
+      // Create PDF with proper margins
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const pageWidth = 210; // A4 width in mm
+      const pageHeight = 297; // A4 height in mm
+      const margin = 20; // 20mm margins on all sides
+      const contentWidth = pageWidth - (margin * 2);
+      let currentY = margin;
+      
+      // Helper function to add text with word wrapping
+      const addText = (text, x, y, maxWidth, fontSize = 12, fontStyle = 'normal') => {
+        pdf.setFontSize(fontSize);
+        pdf.setFont('helvetica', fontStyle);
+        const lines = pdf.splitTextToSize(text, maxWidth);
+        pdf.text(lines, x, y);
+        return y + (lines.length * fontSize * 0.4);
+      };
+      
+      // Helper function to add a line
+      const addLine = (x1, y1, x2, y2) => {
+        pdf.line(x1, y1, x2, y2);
+      };
+      
+      // Helper function to check if we need a new page
+      const checkNewPage = (requiredHeight) => {
+        if (currentY + requiredHeight > pageHeight - margin) {
+          pdf.addPage();
+          currentY = margin;
+          return true;
+        }
+        return false;
+      };
+      
+      // Header Section
+      const fullName = `${state.personalInfo.firstName || ''} ${state.personalInfo.lastName || ''}`.trim();
+      if (fullName) {
+        currentY = addText(fullName, margin, currentY, contentWidth, 20, 'bold');
+        currentY += 5;
+      }
+      
+      // Contact Information
+      const contactInfo = [];
+      if (state.personalInfo.email) contactInfo.push(`Email: ${state.personalInfo.email}`);
+      if (state.personalInfo.phone) contactInfo.push(`Phone: ${state.personalInfo.phone}`);
+      if (state.personalInfo.address) contactInfo.push(`Address: ${state.personalInfo.address}`);
+      if (state.personalInfo.linkedin) contactInfo.push(`LinkedIn: ${state.personalInfo.linkedin}`);
+      
+      if (contactInfo.length > 0) {
+        const contactText = contactInfo.join(' | ');
+        currentY = addText(contactText, margin, currentY, contentWidth, 10);
+        currentY += 10;
+        
+        // Add a line under contact info
+        addLine(margin, currentY, pageWidth - margin, currentY);
+        currentY += 10;
+      }
+      
+      // Professional Summary
+      if (state.personalInfo.summary) {
+        checkNewPage(20);
+        currentY = addText('PROFESSIONAL SUMMARY', margin, currentY, contentWidth, 14, 'bold');
+        currentY += 5;
+        currentY = addText(state.personalInfo.summary, margin, currentY, contentWidth, 11);
+        currentY += 10;
+      }
+      
+      // Education Section
+      const validEducation = state.education.filter(edu => edu.institution && edu.institution.trim());
+      if (validEducation.length > 0) {
+        checkNewPage(20);
+        currentY = addText('EDUCATION', margin, currentY, contentWidth, 14, 'bold');
+        currentY += 5;
+        
+        validEducation.forEach(edu => {
+          checkNewPage(15);
+          const degreeText = `${edu.degree || ''} ${edu.field ? `in ${edu.field}` : ''}`.trim();
+          const institutionText = edu.institution;
+          const dateText = `${edu.startDate || ''} - ${edu.endDate || 'Present'}`.replace(/^ - | - $/, '');
+          
+          currentY = addText(institutionText, margin, currentY, contentWidth, 12, 'bold');
+          if (degreeText) {
+            currentY = addText(degreeText, margin, currentY, contentWidth, 11, 'italic');
+          }
+          if (dateText) {
+            currentY = addText(dateText, margin, currentY, contentWidth, 10);
+          }
+          if (edu.description) {
+            currentY = addText(edu.description, margin, currentY, contentWidth, 10);
+          }
+          currentY += 5;
+        });
+        currentY += 5;
+      }
+      
+      // Work Experience Section
+      const validExperience = state.experience.filter(exp => exp.company && exp.company.trim());
+      if (validExperience.length > 0) {
+        checkNewPage(20);
+        currentY = addText('WORK EXPERIENCE', margin, currentY, contentWidth, 14, 'bold');
+        currentY += 5;
+        
+        validExperience.forEach(exp => {
+          checkNewPage(15);
+          const positionText = exp.position || '';
+          const companyText = exp.company;
+          const dateText = `${exp.startDate || ''} - ${exp.endDate || 'Present'}`.replace(/^ - | - $/, '');
+          
+          currentY = addText(companyText, margin, currentY, contentWidth, 12, 'bold');
+          if (positionText) {
+            currentY = addText(positionText, margin, currentY, contentWidth, 11, 'italic');
+          }
+          if (dateText) {
+            currentY = addText(dateText, margin, currentY, contentWidth, 10);
+          }
+          if (exp.description) {
+            currentY = addText(exp.description, margin, currentY, contentWidth, 10);
+          }
+          currentY += 5;
+        });
+        currentY += 5;
+      }
+      
+      // Internships Section
+      const validInternships = state.internships.filter(intern => intern.company && intern.company.trim());
+      if (validInternships.length > 0) {
+        checkNewPage(20);
+        currentY = addText('INTERNSHIPS', margin, currentY, contentWidth, 14, 'bold');
+        currentY += 5;
+        
+        validInternships.forEach(intern => {
+          checkNewPage(15);
+          const positionText = intern.position || '';
+          const companyText = intern.company;
+          const dateText = `${intern.startDate || ''} - ${intern.endDate || 'Present'}`.replace(/^ - | - $/, '');
+          
+          currentY = addText(companyText, margin, currentY, contentWidth, 12, 'bold');
+          if (positionText) {
+            currentY = addText(positionText, margin, currentY, contentWidth, 11, 'italic');
+          }
+          if (dateText) {
+            currentY = addText(dateText, margin, currentY, contentWidth, 10);
+          }
+          if (intern.description) {
+            currentY = addText(intern.description, margin, currentY, contentWidth, 10);
+          }
+          currentY += 5;
+        });
+        currentY += 5;
+      }
+      
+      // Projects Section
+      const validProjects = state.projects.filter(project => project.title && project.title.trim());
+      if (validProjects.length > 0) {
+        checkNewPage(20);
+        currentY = addText('PROJECTS', margin, currentY, contentWidth, 14, 'bold');
+        currentY += 5;
+        
+        validProjects.forEach(project => {
+          checkNewPage(15);
+          const titleText = project.title;
+          const techText = project.technologies ? `Technologies: ${project.technologies}` : '';
+          const dateText = `${project.startDate || ''} - ${project.endDate || 'Present'}`.replace(/^ - | - $/, '');
+          
+          currentY = addText(titleText, margin, currentY, contentWidth, 12, 'bold');
+          if (techText) {
+            currentY = addText(techText, margin, currentY, contentWidth, 11, 'italic');
+          }
+          if (dateText) {
+            currentY = addText(dateText, margin, currentY, contentWidth, 10);
+          }
+          if (project.description) {
+            currentY = addText(project.description, margin, currentY, contentWidth, 10);
+          }
+          currentY += 5;
+        });
+        currentY += 5;
+      }
+      
+      // Skills Section
+      if (state.skills && state.skills.length > 0) {
+        checkNewPage(15);
+        currentY = addText('SKILLS', margin, currentY, contentWidth, 14, 'bold');
+        currentY += 5;
+        const skillsText = state.skills.join(', ');
+        currentY = addText(skillsText, margin, currentY, contentWidth, 11);
+        currentY += 10;
+      }
+      
+      // Languages Section
+      const validLanguages = state.languages.filter(lang => lang.language && lang.language.trim());
+      if (validLanguages.length > 0) {
+        checkNewPage(15);
+        currentY = addText('LANGUAGES', margin, currentY, contentWidth, 14, 'bold');
+        currentY += 5;
+        
+        validLanguages.forEach(lang => {
+          checkNewPage(10);
+          const langText = `${lang.language}${lang.proficiency ? ` - ${lang.proficiency}` : ''}`;
+          currentY = addText(langText, margin, currentY, contentWidth, 11);
+          currentY += 3;
+        });
+        currentY += 5;
+      }
+      
+      // Certificates Section
+      const validCertificates = state.certificates.filter(cert => cert.name && cert.name.trim());
+      if (validCertificates.length > 0) {
+        checkNewPage(20);
+        currentY = addText('CERTIFICATES', margin, currentY, contentWidth, 14, 'bold');
+        currentY += 5;
+        
+        validCertificates.forEach(cert => {
+          checkNewPage(15);
+          const nameText = cert.name;
+          const issuerText = cert.issuer ? `Issued by: ${cert.issuer}` : '';
+          const dateText = cert.date || '';
+          
+          currentY = addText(nameText, margin, currentY, contentWidth, 12, 'bold');
+          if (issuerText) {
+            currentY = addText(issuerText, margin, currentY, contentWidth, 11, 'italic');
+          }
+          if (dateText) {
+            currentY = addText(dateText, margin, currentY, contentWidth, 10);
+          }
+          currentY += 5;
+        });
+        currentY += 5;
+      }
+      
+      // Achievements Section
+      const validAchievements = state.achievements.filter(achievement => achievement.title && achievement.title.trim());
+      if (validAchievements.length > 0) {
+        checkNewPage(20);
+        currentY = addText('ACHIEVEMENTS & AWARDS', margin, currentY, contentWidth, 14, 'bold');
+        currentY += 5;
+        
+        validAchievements.forEach(achievement => {
+          checkNewPage(15);
+          const titleText = achievement.title;
+          const dateText = achievement.date || '';
+          
+          currentY = addText(titleText, margin, currentY, contentWidth, 12, 'bold');
+          if (dateText) {
+            currentY = addText(dateText, margin, currentY, contentWidth, 10);
+          }
+          if (achievement.description) {
+            currentY = addText(achievement.description, margin, currentY, contentWidth, 10);
+          }
+          currentY += 5;
+        });
+        currentY += 5;
+      }
+      
+      return pdf;
+    } catch (error) {
+      console.error('Error generating PDF from data:', error);
+      throw error;
+    }
+  }, [state]);
+
   const downloadResume = useCallback(async () => {
     try {
       // Show loading indicator
@@ -351,93 +615,174 @@ function useResume() {
       `;
       document.body.appendChild(loadingElement);
 
-      // Dynamically import the libraries
-      const html2canvas = (await import('html2canvas')).default;
-      const jsPDF = (await import('jspdf')).default;
+      let pdf;
       
-      // Get the resume template element
-      const resumeElement = document.querySelector('.resume-template');
-      if (!resumeElement) {
-        throw new Error('Resume template not found');
-      }
-
-      // Add PDF-specific class for styling
-      resumeElement.classList.add('pdf-mode');
-
-      // Generate canvas from the resume element with optimized settings
-      const canvas = await html2canvas(resumeElement, {
-        scale: 3, // Higher quality for crisp text
-        useCORS: true,
-        allowTaint: true,
-        backgroundColor: '#ffffff',
-        width: resumeElement.scrollWidth,
-        height: resumeElement.scrollHeight,
-        logging: false,
-        removeContainer: true,
-        imageTimeout: 15000,
-        foreignObjectRendering: true,
-        onclone: (clonedDoc) => {
-          // Ensure proper styling in the cloned document
-          const clonedElement = clonedDoc.querySelector('.resume-template');
-          if (clonedElement) {
-            // Set A4 dimensions and styling
-            clonedElement.style.width = '210mm';
-            clonedElement.style.maxWidth = '210mm';
-            clonedElement.style.margin = '0 auto';
-            clonedElement.style.padding = '20mm';
-            clonedElement.style.fontFamily = 'Arial, Helvetica, sans-serif';
-            clonedElement.style.fontSize = '12px';
-            clonedElement.style.lineHeight = '1.4';
-            clonedElement.style.color = '#000000';
-            clonedElement.style.backgroundColor = '#ffffff';
-            clonedElement.style.boxSizing = 'border-box';
-            
-            // Ensure all text is black and readable
-            const allElements = clonedElement.querySelectorAll('*');
-            allElements.forEach(el => {
-              if (el.style) {
-                el.style.color = el.style.color || '#000000';
-                el.style.fontFamily = el.style.fontFamily || 'Arial, Helvetica, sans-serif';
-              }
-            });
-          }
+      try {
+        // Try the data-based PDF generation first (more reliable)
+        console.log('Attempting data-based PDF generation...');
+        pdf = await generatePDFFromData();
+        console.log('Data-based PDF generation successful');
+      } catch (dataError) {
+        console.warn('Data-based PDF generation failed, trying DOM-based method:', dataError);
+        
+        // Fallback to DOM-based method
+        const html2canvas = (await import('html2canvas')).default;
+        
+        // Try multiple selectors to find the resume element
+        let resumeElement = document.querySelector('.resume-template');
+        if (!resumeElement) {
+          resumeElement = document.querySelector('.resume-container .resume-template');
         }
-      });
+        if (!resumeElement) {
+          resumeElement = document.querySelector('.resume-viewer-content .resume-template');
+        }
+        if (!resumeElement) {
+          resumeElement = document.querySelector('[class*="resume-template"]');
+        }
+        
+        if (!resumeElement) {
+          throw new Error('Resume template not found. Please make sure you are on the Resume Viewer page and the resume preview is visible.');
+        }
 
-      // Remove PDF-specific class
-      resumeElement.classList.remove('pdf-mode');
+        console.log('Found resume element:', resumeElement);
+        console.log('Resume element content:', resumeElement.textContent);
 
-      // Create PDF with proper margins
-      const pdf = new jsPDF('p', 'mm', 'a4');
-      const pageWidth = 210; // A4 width in mm
-      const pageHeight = 297; // A4 height in mm
-      const margin = 15; // 15mm margins on all sides
-      const contentWidth = pageWidth - (margin * 2);
-      const contentHeight = pageHeight - (margin * 2);
+        // Debug: Check if resume has content
+        const hasContent = resumeElement.textContent.trim().length > 0;
+        console.log('Has content:', hasContent, 'Content length:', resumeElement.textContent.trim().length);
+        
+        if (!hasContent) {
+          throw new Error('Resume appears to be empty. Please add some content to your resume before downloading.');
+        }
 
-      // Calculate dimensions to fit the content area
-      const imgWidth = contentWidth;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      
-      let heightLeft = imgHeight;
-      let position = margin;
+        // Create a temporary container for PDF generation
+        const tempContainer = document.createElement('div');
+        tempContainer.style.position = 'absolute';
+        tempContainer.style.left = '-9999px';
+        tempContainer.style.top = '0';
+        tempContainer.style.width = '210mm';
+        tempContainer.style.height = 'auto';
+        tempContainer.style.backgroundColor = '#ffffff';
+        tempContainer.style.fontFamily = 'Arial, Helvetica, sans-serif';
+        tempContainer.style.fontSize = '12px';
+        tempContainer.style.lineHeight = '1.4';
+        tempContainer.style.color = '#000000';
+        tempContainer.style.padding = '20mm';
+        tempContainer.style.boxSizing = 'border-box';
+        
+        // Clone the resume element
+        const clonedElement = resumeElement.cloneNode(true);
+        
+        // Apply PDF-specific styles to the cloned element
+        clonedElement.style.width = '100%';
+        clonedElement.style.maxWidth = '100%';
+        clonedElement.style.margin = '0';
+        clonedElement.style.padding = '0';
+        clonedElement.style.backgroundColor = '#ffffff';
+        clonedElement.style.color = '#000000';
+        clonedElement.style.fontFamily = 'Arial, Helvetica, sans-serif';
+        clonedElement.style.fontSize = '12px';
+        clonedElement.style.lineHeight = '1.4';
+        clonedElement.style.position = 'static';
+        clonedElement.style.transform = 'none';
+        clonedElement.style.display = 'block';
+        clonedElement.style.visibility = 'visible';
+        clonedElement.style.opacity = '1';
+        
+        // Apply styles to all child elements
+        const allElements = clonedElement.querySelectorAll('*');
+        allElements.forEach(el => {
+          el.style.color = '#000000';
+          el.style.backgroundColor = 'transparent';
+          el.style.position = 'static';
+          el.style.transform = 'none';
+          el.style.display = el.style.display || 'block';
+          el.style.visibility = 'visible';
+          el.style.opacity = '1';
+        });
+        
+        // Ensure specific elements have correct display properties
+        const flexElements = clonedElement.querySelectorAll('.contact-info, .skills-list, .languages-list, .item-header');
+        flexElements.forEach(el => {
+          el.style.display = 'flex';
+        });
+        
+        const inlineElements = clonedElement.querySelectorAll('span, .item-date, .item-subtitle, .language-proficiency');
+        inlineElements.forEach(el => {
+          el.style.display = 'inline';
+        });
+        
+        // Append to temporary container
+        tempContainer.appendChild(clonedElement);
+        document.body.appendChild(tempContainer);
+        
+        // Wait for rendering
+        await new Promise(resolve => setTimeout(resolve, 200));
 
-      // Add first page
-      pdf.addImage(canvas, 'PNG', margin, position, imgWidth, imgHeight);
-      heightLeft -= contentHeight;
+        console.log('Temporary container content:', tempContainer.textContent);
+        console.log('Temporary container dimensions:', tempContainer.offsetWidth, tempContainer.offsetHeight);
 
-      // Add additional pages if needed
-      while (heightLeft >= 0) {
-        position = margin - (heightLeft - imgHeight);
-        pdf.addPage();
-        pdf.addImage(canvas, 'PNG', margin, position, imgWidth, imgHeight);
+        // Generate canvas from the temporary container
+        const canvas = await html2canvas(tempContainer, {
+          scale: 2,
+          useCORS: true,
+          allowTaint: true,
+          backgroundColor: '#ffffff',
+          width: tempContainer.offsetWidth,
+          height: tempContainer.offsetHeight,
+          logging: true, // Enable logging for debugging
+          removeContainer: false,
+          imageTimeout: 15000,
+          foreignObjectRendering: true,
+          scrollX: 0,
+          scrollY: 0,
+          windowWidth: tempContainer.offsetWidth,
+          windowHeight: tempContainer.offsetHeight
+        });
+
+        // Remove temporary container
+        document.body.removeChild(tempContainer);
+
+        console.log('Canvas dimensions:', canvas.width, canvas.height);
+
+        // Debug: Check canvas dimensions
+        if (canvas.width === 0 || canvas.height === 0) {
+          throw new Error('Failed to capture resume content. The canvas is empty.');
+        }
+
+        // Create PDF with proper margins
+        const jsPDF = (await import('jspdf')).default;
+        pdf = new jsPDF('p', 'mm', 'a4');
+        const pageWidth = 210; // A4 width in mm
+        const pageHeight = 297; // A4 height in mm
+        const margin = 15; // 15mm margins on all sides
+        const contentWidth = pageWidth - (margin * 2);
+        const contentHeight = pageHeight - (margin * 2);
+
+        // Calculate dimensions to fit the content area
+        const imgWidth = contentWidth;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+        
+        let heightLeft = imgHeight;
+        let position = margin;
+
+        // Add first page
+        pdf.addImage(canvas, 'JPEG', margin, position, imgWidth, imgHeight, '', 'FAST');
         heightLeft -= contentHeight;
+
+        // Add additional pages if needed
+        while (heightLeft >= 0) {
+          position = margin - (heightLeft - imgHeight);
+          pdf.addPage();
+          pdf.addImage(canvas, 'JPEG', margin, position, imgWidth, imgHeight, '', 'FAST');
+          heightLeft -= contentHeight;
+        }
       }
 
       // Generate filename with user's name if available
       const firstName = state.personalInfo.firstName || 'Resume';
       const lastName = state.personalInfo.lastName || '';
-      const timestamp = new Date().toISOString().split('T')[0]; // Add date for uniqueness
+      const timestamp = new Date().toISOString().split('T')[0];
       const filename = `${firstName}${lastName ? '_' + lastName : ''}_Resume_${timestamp}.pdf`;
 
       // Remove loading indicator
@@ -445,6 +790,14 @@ function useResume() {
 
       // Enhanced download functionality for different platforms
       const pdfBlob = pdf.output('blob');
+      
+      // Check file size and warn if too large
+      const fileSizeMB = pdfBlob.size / (1024 * 1024);
+      console.log('PDF file size:', fileSizeMB.toFixed(2), 'MB');
+      
+      if (fileSizeMB > 10) {
+        console.warn(`PDF file size is ${fileSizeMB.toFixed(2)}MB, which exceeds the 10MB limit. Consider reducing content.`);
+      }
       
       // Check if we're on a mobile device
       const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -553,7 +906,7 @@ function useResume() {
           font-family: Arial, sans-serif;
           animation: slideIn 0.3s ease-out;
         ">
-          ✅ Resume downloaded successfully!
+          ✅ Resume downloaded successfully! (${fileSizeMB.toFixed(2)}MB)
         </div>
         <style>
           @keyframes slideIn {
@@ -614,7 +967,7 @@ function useResume() {
         }
       }, 5000);
     }
-  }, [state]);
+  }, [state, generatePDFFromData]);
 
   return {
     resume: state,
