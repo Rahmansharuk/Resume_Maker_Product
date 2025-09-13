@@ -1,0 +1,47 @@
+/* src/styles/Toolbar.css */
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-bottom: 1.5rem;
+}
+
+.toolbar-btn {
+  background: var(--primary, #2563eb);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius, 8px);
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.toolbar-btn:hover, .toolbar-btn:focus {
+  background: var(--primary-dark, #1e40af);
+}
+.reset-btn {
+  background: #f44336;
+}
+.reset-btn:hover, .reset-btn:focus {
+  background: #b71c1c;
+}
+.print-btn {
+  background: var(--accent, #f59e42);
+  color: #222;
+}
+.print-btn:hover, .print-btn:focus {
+  background: #e65100;
+  color: #fff;
+}
+@media (max-width: 600px) {
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+  .toolbar-btn {
+    width: 100%;
+    font-size: 0.98rem;
+  }
+}

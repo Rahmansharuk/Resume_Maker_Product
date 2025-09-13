@@ -1,0 +1,295 @@
+/* src/styles/global.css */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: #333;
+  background-color: #f5f5f5;
+  /* Prevent any unwanted animations */
+  animation: none;
+  transition: none;
+}
+
+/* CSS Variables for theme and spacing */
+:root {
+  --primary: #2563eb;
+  --primary-dark: #1e40af;
+  --accent: #f59e42;
+  --bg: #f4f6f8;
+  --text: #222;
+  --border: #e5e7eb;
+  --radius: 8px;
+  --max-width: 1200px;
+  --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, Arial, sans-serif;
+  --font-size-base: 16px;
+  --font-size-lg: 1.25rem;
+  --font-size-sm: 0.95rem;
+  /* Removed transition variable to prevent shaking */
+}
+
+html {
+  font-size: 100%;
+  scroll-behavior: smooth;
+  /* Ensure stable rendering */
+  will-change: auto;
+  transform: translateZ(0);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-main);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.6;
+  font-size: var(--font-size-base);
+  /* Prevent any unwanted animations */
+  animation: none;
+  transition: none;
+}
+
+h1, h2, h3, h4 {
+  margin: 0 0 0.5em 0;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+  /* Removed transition to prevent shaking */
+}
+
+a:hover, a:focus {
+  color: var(--primary-dark);
+  text-decoration: underline;
+}
+
+img, svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+  font-size: 1em;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  outline: none;
+  /* Removed transitions to prevent shaking */
+  /* Ensure stable rendering */
+  will-change: auto;
+  transform: translateZ(0);
+}
+
+button:focus, input:focus, select:focus, textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+}
+
+/* Utility classes */
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+}
+
+.flex {
+  display: flex;
+  gap: 1rem;
+}
+.flex-col {
+  flex-direction: column;
+}
+.flex-row {
+  flex-direction: row;
+}
+.justify-between {
+  justify-content: space-between;
+}
+.align-center {
+  align-items: center;
+}
+.gap-2 { gap: 2rem; }
+.gap-1 { gap: 1rem; }
+.gap-05 { gap: 0.5rem; }
+.flex-1 { flex: 1; }
+
+/* Responsive directional utility used in App */
+@media (min-width: 768px) {
+  .flex-md-row { flex-direction: row; }
+}
+
+.rounded {
+  border-radius: var(--radius);
+}
+.shadow {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+.border {
+  border: 1px solid var(--border);
+}
+.p-1 { padding: 1rem; }
+.p-2 { padding: 2rem; }
+.m-1 { margin: 1rem; }
+.m-2 { margin: 2rem; }
+
+/* Responsive Typography */
+h1 { font-size: 2.2rem; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.2rem; }
+
+@media (max-width: 600px) {
+  html { font-size: 90%; }
+  .container { padding: 1rem 0.5rem; }
+  h1 { font-size: 1.5rem; }
+  h2 { font-size: 1.1rem; }
+}
+
+/* Scrollbar for better UX */
+::-webkit-scrollbar {
+  width: 8px;
+  background: #e5e7eb;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 8px;
+}
+
+/* Accessibility: focus-visible */
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Print styles for resume preview */
+@media print {
+  body { background: #fff; color: #000; }
+  .no-print, .header, .footer, .resume-form, .toolbar { display: none !important; }
+  .resume-preview { width: 210mm; min-height: 297mm; padding: 15mm; box-shadow: none; border-radius: 0; }
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  background-color: #4CAF50;
+  color: white;
+  font-weight: bold;
+  /* Removed transition to prevent shaking */
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  /* Ensure stable rendering */
+  will-change: auto;
+  transform: translateZ(0);
+}
+
+h1, h2, h3, h4 {
+  margin-bottom: 15px;
+  color: #2c3e50;
+}
+
+/* Component helpers */
+.btn {
+  cursor: pointer;
+  border: none;
+  border-radius: 6px;
+  padding: 0.6rem 1rem;
+  background-color: var(--primary);
+  color: #fff;
+  font-weight: 600;
+  /* Removed transitions to prevent shaking */
+}
+
+.btn:hover { background-color: var(--primary-dark); }
+.btn:active { transform: translateY(1px); }
+
+/* Button variants */
+.btn-danger {
+  background-color: #dc2626;
+  color: #fff;
+}
+
+.btn-danger:hover {
+  background-color: #b91c1c;
+}
+
+.btn-success {
+  background-color: #16a34a;
+  color: #fff;
+}
+
+.btn-success:hover {
+  background-color: #15803d;
+}
+
+.btn-warning {
+  background-color: #d97706;
+  color: #fff;
+}
+
+.btn-warning:hover {
+  background-color: #b45309;
+}
+
+.input-group label { display: block; margin-bottom: 6px; font-weight: 500; }
+.input-group input, .input-group textarea, .input-group select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  /* Ensure stable rendering */
+  will-change: auto;
+  transform: translateZ(0);
+}
+
+/* Additional stability improvements */
+* {
+  /* Prevent any unwanted animations globally */
+  animation: none !important;
+  transition: none !important;
+}
+
+/* Ensure stable rendering for all interactive elements */
+button, input, select, textarea, a {
+  will-change: auto;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Responsive improvements */
+@media (max-width: 480px) {
+  .container {
+    padding: 0.75rem 0.5rem;
+  }
+  
+  input, textarea, select {
+    font-size: 16px; /* Prevent zoom on iOS */
+  }
+}
+
+/* High DPI display optimizations */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .shadow {
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  }
+}

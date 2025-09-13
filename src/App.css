@@ -1,38 +1,74 @@
+/* src/App.css */
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  /* Ensure stable rendering */
+  will-change: auto;
+  transform: translateZ(0);
 }
 
-.App-link {
-  color: #61dafb;
+.main-container {
+  display: flex;
+  flex-wrap: wrap;
+  min-height: calc(100vh - 120px);
+  padding: 20px;
+  gap: 20px;
+  /* Ensure stable rendering */
+  will-change: auto;
+  transform: translateZ(0);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+/* Responsive layout improvements */
+@media (max-width: 768px) {
+  .main-container {
+    flex-direction: column;
+    padding: 10px;
+    gap: 15px;
   }
-  to {
-    transform: rotate(360deg);
+  
+  .container {
+    padding: 1rem 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-container {
+    padding: 5px;
+    gap: 10px;
+  }
+  
+  .container {
+    padding: 0.75rem 0.25rem;
+  }
+}
+
+/* Ensure stable rendering for all containers */
+.container {
+  /* Prevent any unwanted animations */
+  animation: none;
+  transition: none;
+  /* Ensure stable rendering */
+  will-change: auto;
+  transform: translateZ(0);
+}
+
+/* High DPI display optimizations */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .main-container {
+    gap: 15px;
+  }
+}
+
+/* Print styles */
+@media print {
+  .App {
+    min-height: auto;
+  }
+  
+  .main-container {
+    min-height: auto;
+    padding: 0;
+    gap: 0;
   }
 }

@@ -1,0 +1,313 @@
+/* src/styles/ResumeForm.css */
+
+.resume-form {
+  flex: 1;
+  min-width: 280px;
+  background: #fff;
+  padding: 2rem;
+  border-radius: var(--radius);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  margin-bottom: 1rem;
+  /* Removed transition to prevent shaking */
+  will-change: auto;
+  transform: translateZ(0); /* Force hardware acceleration */
+}
+
+@media (max-width: 900px) {
+  .resume-form {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .resume-form {
+    padding: 0.5rem;
+    min-width: 0;
+    font-size: 0.95rem;
+  }
+}
+
+.form-section {
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.form-section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.section-header h4 {
+  margin: 0;
+  color: #333;
+  font-size: 1rem;
+}
+
+.section-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 600px) {
+  .form-row {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
+.form-group {
+  flex: 1;
+  min-width: 0; /* Prevent flex items from overflowing */
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  background: #fff;
+  /* Prevent any unwanted animations */
+  transition: none;
+  animation: none;
+  /* Ensure stable rendering */
+  will-change: auto;
+  transform: translateZ(0);
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #2196F3;
+  box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.1);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #999;
+  opacity: 1;
+}
+
+/* Education, Experience, Internship, Project, Certificate, and Achievement item styles */
+.education-item,
+.experience-item,
+.internship-item,
+.project-item,
+.certificate-item,
+.achievement-item {
+  background: #fafafa;
+  padding: 1rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  border: 1px solid #eee;
+}
+
+.education-item:last-child,
+.experience-item:last-child,
+.internship-item:last-child,
+.project-item:last-child,
+.certificate-item:last-child,
+.achievement-item:last-child {
+  margin-bottom: 0;
+}
+
+.education-item .form-row,
+.experience-item .form-row,
+.internship-item .form-row,
+.project-item .form-row,
+.certificate-item .form-row,
+.achievement-item .form-row {
+  margin-bottom: 0.75rem;
+}
+
+.education-item .form-group,
+.experience-item .form-group,
+.internship-item .form-group,
+.project-item .form-group,
+.certificate-item .form-group,
+.achievement-item .form-group {
+  margin-bottom: 0.5rem;
+}
+
+.add-btn {
+  background-color: #2196F3;
+  margin-top: 10px;
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.add-btn:hover {
+  background-color: #1976D2;
+}
+
+.remove-btn {
+  background-color: #f44336;
+  margin-left: 10px;
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.remove-btn:hover {
+  background-color: #d32f2f;
+}
+
+.skills-input {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.skills-input input {
+  flex: 1;
+  min-width: 0;
+}
+
+.skills-input button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.skills-input button:hover {
+  background-color: #45a049;
+}
+
+.skills-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.skill-tag {
+  background-color: #e0e0e0;
+  padding: 5px 10px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  font-size: 0.85rem;
+  color: #333;
+}
+
+.skill-tag button {
+  background: transparent;
+  color: #666;
+  margin-left: 5px;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.skill-tag button:hover {
+  background: #ccc;
+  color: #333;
+}
+
+/* Ensure form stability on all devices */
+@media (max-width: 480px) {
+  .resume-form {
+    padding: 0.5rem;
+    margin: 0.5rem;
+  }
+  
+  .form-group input,
+  .form-group textarea {
+    padding: 8px;
+    font-size: 16px; /* Prevent zoom on iOS */
+  }
+  
+  .form-row {
+    margin-bottom: 0.75rem;
+  }
+  
+  .education-item,
+  .experience-item,
+  .internship-item,
+  .project-item,
+  .certificate-item,
+  .achievement-item {
+    padding: 0.75rem;
+  }
+  
+  .section-title {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .add-btn {
+    align-self: flex-start;
+    margin-top: 0;
+  }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .resume-form {
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  }
+}
+
+/* Print styles */
+@media print {
+  .resume-form {
+    box-shadow: none;
+    border: 1px solid #ccc;
+  }
+  
+  .add-btn,
+  .remove-btn {
+    display: none;
+  }
+}

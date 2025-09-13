@@ -1,25 +1,33 @@
-import logo from './logo.svg';
+// src/App.js
+import React, { memo } from 'react';
+import { ResumeProvider } from './contexts/ResumeContext';
+import Header from './components/Layout/Header';
+import Footer from './components/Layout/Footer';
+import ResumeForm from './components/ResumeForm';
+import ResumePreview from './components/ResumePreview';
+import Navbar from './components/Layout/Navbar';
 import './App.css';
 
-function App() {
+const App = memo(function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ResumeProvider>
+      <div className="App" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+        <Header />
+        <Navbar />
+        <main className="container flex flex-col flex-md-row gap-2" style={{ flex: 1 }}>
+          <div className="flex flex-col flex-md-row gap-2" style={{ width: '100%' }}>
+            <div className="flex-1">
+              <ResumeForm />
+            </div>
+            <div className="flex-1">
+              <ResumePreview />
+            </div>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    </ResumeProvider>
   );
-}
+});
 
 export default App;
