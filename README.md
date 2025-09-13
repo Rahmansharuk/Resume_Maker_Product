@@ -1,70 +1,89 @@
-# Getting Started with Create React App
+# Resume Maker App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A modern, responsive React application for creating professional resumes with a clean and intuitive interface.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- **Personal Information**: Name, email, phone, address, LinkedIn, and professional summary
+- **Education**: Add multiple education entries with institution, degree, field, dates, and description
+- **Work Experience**: Add multiple work experiences with company, position, dates, and description
+- **Skills**: Add and remove skills dynamically
+- **Real-time Preview**: See your resume as you type
+- **Responsive Design**: Works perfectly on all devices
+- **Export/Import**: Save and load resume data
+- **Print Support**: Print-friendly resume output
 
-### `npm start`
+## Performance Improvements
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### ✅ Fixed Issues
+- **Shaking/Animation Bug**: Eliminated infinite re-render loop that caused form shaking
+- **Performance**: Optimized with React.memo, useCallback, and useMemo
+- **State Management**: Fixed circular dependency in useEffect hooks
+- **Responsiveness**: Enhanced mobile and tablet experience
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### 🚀 Optimizations Made
+- Used `React.memo` to prevent unnecessary component re-renders
+- Implemented `useCallback` for all event handlers
+- Added `useMemo` for context values
+- Removed problematic CSS transitions and animations
+- Added hardware acceleration with `transform: translateZ(0)`
+- Optimized localStorage operations
+- Enhanced responsive breakpoints
 
-### `npm test`
+## Getting Started
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Prerequisites
+- Node.js (version 14 or higher)
+- npm or yarn
 
-### `npm run build`
+### Installation
+1. Clone the repository
+2. Navigate to the project directory
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
+4. Start the development server:
+   ```bash
+   npm start
+   ```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Usage
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. **Fill Personal Information**: Enter your basic details
+2. **Add Education**: Include your educational background
+3. **Add Experience**: List your work experience
+4. **Add Skills**: Include relevant skills
+5. **Preview**: See your resume in real-time
+6. **Export/Print**: Save or print your resume
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Responsive Design
 
-### `npm run eject`
+The app is fully responsive and works seamlessly on:
+- Desktop computers
+- Tablets
+- Mobile phones
+- All screen sizes
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Browser Support
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Chrome (recommended)
+- Firefox
+- Safari
+- Edge
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Technical Details
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- **Framework**: React 18
+- **State Management**: React Context + useReducer
+- **Styling**: CSS with responsive design
+- **Storage**: LocalStorage for data persistence
+- **Performance**: Optimized rendering with React hooks
 
-## Learn More
+## Contributing
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Feel free to submit issues and enhancement requests!
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## License
 
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This project is open source and available under the MIT License.
